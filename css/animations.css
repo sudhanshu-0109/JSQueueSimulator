@@ -1,0 +1,256 @@
+/* ==========================================================================
+   QueueFlow - Animations & Transitions
+   Smooth, accessible, performant CSS animations for DSA visualization
+   ========================================================================== */
+
+/* 1. Enqueue Animation: Member slides into the REAR */
+@keyframes slideInRear {
+    0% {
+        opacity: 0;
+        transform: translateX(60px) scale(0.92);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(-4px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.anim-enqueue {
+    animation: slideInRear 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 2. Dequeue Animation: Member slides out from FRONT */
+@keyframes slideOutFront {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        max-width: 220px;
+        margin-right: var(--space-4, 16px);
+    }
+    40% {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 12px 24px -4px rgba(239, 68, 68, 0.25);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-80px) scale(0.85);
+        max-width: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        border-width: 0;
+    }
+}
+
+.anim-dequeue {
+    animation: slideOutFront 380ms cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* 3. Peek / Highlight Animation */
+@keyframes peekPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+    }
+    50% {
+        transform: translateY(-6px) scale(1.04);
+        box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.25), 0 12px 24px -4px rgba(37, 99, 235, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}
+
+.anim-peek {
+    animation: peekPulse 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-color: var(--primary, #2563EB) !important;
+    background: linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 100%) !important;
+}
+
+/* 4. Rear Highlight Animation */
+@keyframes rearPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.5);
+    }
+    50% {
+        transform: translateY(-6px) scale(1.04);
+        box-shadow: 0 0 0 8px rgba(147, 51, 234, 0.25), 0 12px 24px -4px rgba(147, 51, 234, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+    }
+}
+
+.anim-rear {
+    animation: rearPulse 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-color: #9333EA !important;
+    background: linear-gradient(180deg, #FAF5FF 0%, #FFFFFF 100%) !important;
+}
+
+/* 5. Search Match Pulse */
+@keyframes searchMatchGlow {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+    }
+    50% {
+        transform: translateY(-6px) scale(1.05);
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0.35), 0 16px 28px -6px rgba(245, 158, 11, 0.25);
+    }
+}
+
+.anim-search-match {
+    animation: searchMatchGlow 1.2s ease-in-out infinite;
+    border-color: #F59E0B !important;
+    background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%) !important;
+}
+
+/* 6. Queue Underflow Shake */
+@keyframes shakeUnderflow {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+.anim-shake {
+    animation: shakeUnderflow 400ms ease-in-out;
+}
+
+/* 7. Reset Fade Out */
+@keyframes resetFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.92) translateY(10px);
+    }
+}
+
+.anim-reset {
+    animation: resetFadeOut 250ms ease-out forwards;
+}
+
+/* 8. Active Status Pulse Dot */
+@keyframes pulseDot {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--success, #10B981);
+    animation: pulseDot 2s infinite;
+}
+
+/* 9. Toast Notification Animations */
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-16px) scale(0.9);
+    }
+}
+
+.toast-enter {
+    animation: toastIn 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-leave {
+    animation: toastOut 220ms ease-in forwards;
+}
+
+/* 10. Arrow Connector Flow Animation */
+@keyframes flowArrow {
+    0% {
+        opacity: 0.4;
+        transform: translateX(-2px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(2px);
+    }
+    100% {
+        opacity: 0.4;
+        transform: translateX(-2px);
+    }
+}
+
+.arrow-flow {
+    animation: flowArrow 1.8s ease-in-out infinite;
+}
+
+/* 11. Modal Fade & Backdrop Blur */
+@keyframes modalBackdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalContentIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-enter {
+    animation: modalBackdropIn 200ms ease-out;
+}
+
+.modal-enter .modal-box {
+    animation: modalContentIn 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 12. Accessibility: Respect User's Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .anim-dequeue {
+        display: none !important;
+    }
+}
