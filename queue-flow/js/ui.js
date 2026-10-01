@@ -168,6 +168,12 @@ const UI = {
         runway.innerHTML = html;
         this.refreshIcons();
 
+        // Toggle mobile swipe hint based on count
+        const mobileHint = document.querySelector('.runway-mobile-hint');
+        if (mobileHint) {
+            mobileHint.style.display = total > 1 ? '' : 'none';
+        }
+
         // If newly added or highlighted, smooth scroll runway to keep it in view
         if (newlyAddedId) {
             setTimeout(() => {

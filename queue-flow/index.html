@@ -139,6 +139,36 @@
         </section>
 
         <!-- ==================================================================
+             Mobile Quick Navigation (Visible on mobile & tablet for instant presentation jumping)
+             ================================================================== -->
+        <nav class="mobile-quick-nav" id="mobile-quick-nav" aria-label="Mobile section navigation">
+            <a href="#card-runway" class="quick-nav-pill active">
+                <i data-lucide="eye" style="width: 13px; height: 13px;"></i>
+                <span>Queue Runway</span>
+            </a>
+            <a href="#card-operations" class="quick-nav-pill">
+                <i data-lucide="sliders" style="width: 13px; height: 13px;"></i>
+                <span>Operations</span>
+            </a>
+            <a href="#card-enqueue" class="quick-nav-pill">
+                <i data-lucide="user-plus" style="width: 13px; height: 13px;"></i>
+                <span>+ Enqueue</span>
+            </a>
+            <a href="#card-pointers" class="quick-nav-pill">
+                <i data-lucide="terminal" style="width: 13px; height: 13px;"></i>
+                <span>Pointers</span>
+            </a>
+            <a href="#card-scenarios" class="quick-nav-pill">
+                <i data-lucide="briefcase" style="width: 13px; height: 13px;"></i>
+                <span>Scenarios</span>
+            </a>
+            <a href="#card-theory" class="quick-nav-pill">
+                <i data-lucide="book-open" style="width: 13px; height: 13px;"></i>
+                <span>Viva &amp; Theory</span>
+            </a>
+        </nav>
+
+        <!-- ==================================================================
              Main Content Grid: Controls (Left) & Visualization (Right)
              ================================================================== -->
         <main class="dashboard-grid">
@@ -149,7 +179,7 @@
             <div class="controls-column">
 
                 <!-- Card 1: Add Member (Enqueue) -->
-                <div class="card">
+                <div class="card" id="card-enqueue">
                     <div class="card-header">
                         <div class="card-header-left">
                             <span class="card-title">
@@ -200,7 +230,7 @@
                 </div>
 
                 <!-- Card 2: Queue Operations -->
-                <div class="card">
+                <div class="card" id="card-operations">
                     <div class="card-header">
                         <div class="card-header-left">
                             <span class="card-title">
@@ -262,7 +292,7 @@
                 </div>
 
                 <!-- Card 3: Preset Scenarios -->
-                <div class="card">
+                <div class="card" id="card-scenarios">
                     <div class="card-header">
                         <div class="card-header-left">
                             <span class="card-title">
@@ -341,7 +371,7 @@
             <div class="queue-column">
 
                 <!-- Card 1: Live Queue Visual Runway -->
-                <div class="card">
+                <div class="card" id="card-runway">
                     <div class="card-header">
                         <div class="card-header-left">
                             <span class="card-title">
@@ -382,12 +412,19 @@
                             <div class="queue-runway" id="queue-runway" role="region" aria-label="Visual representation of the queue">
                                 <!-- Dynamically populated by UI.renderQueue() -->
                             </div>
+
+                            <!-- Mobile Swipe Hint -->
+                            <div class="runway-mobile-hint">
+                                <i data-lucide="chevrons-left" style="width: 13px; height: 13px;"></i>
+                                <span>Swipe horizontally to view full queue</span>
+                                <i data-lucide="chevrons-right" style="width: 13px; height: 13px;"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 2: DSA State & Pointers Inspector -->
-                <div class="card">
+                <div class="card" id="card-pointers">
                     <div class="card-header">
                         <div class="card-header-left">
                             <span class="card-title">
@@ -422,7 +459,7 @@
                 </div>
 
                 <!-- Card 3: Operation History Log -->
-                <div class="card">
+                <div class="card" id="card-history">
                     <div class="card-header">
                         <div class="card-header-left">
                             <span class="card-title">
@@ -449,7 +486,7 @@
         <!-- ==================================================================
              Educational DSA Section (Concept, Complexity, Applications)
              ================================================================== -->
-        <section class="educational-section" aria-label="Educational DSA Guide">
+        <section class="educational-section" id="card-theory" aria-label="Educational DSA Guide">
 
             <!-- Card 1: How Queue Works -->
             <div class="edu-card">

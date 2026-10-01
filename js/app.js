@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupScenarioListeners();
     setupSimulationListeners();
     setupVivaModalListeners();
+    setupMobileQuickNav();
 
     // 4. Preload initial General Scenario for instant visual impact
     loadPresetMembers(SCENARIOS.general.members);
@@ -575,5 +576,57 @@ function setupVivaModalListeners() {
                 vivaModal.classList.remove('active');
             }
         });
+    }
+}
+
+/**
+ * Setup mobile quick navigation pills with smooth scroll and active state sync.
+ */
+function setupMobileQuickNav() {
+    const pills = document.querySelectorAll('.quick-nav-pill');
+    if (!pills.length) return;
+
+    pills.forEach(pill => {
+        pill.addEventListener('click', (e) => {
+            const targetId = pill.getAttribute('href');
+            if (targetId && targetId.startsWith('#')) {
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    pills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    });
+
+    // IntersectionObserver to auto-update active pill on mobile scroll
+    if ('IntersectionObserver' in window) {
+        const sections = [
+            document.getElementById('card-runway'),
+            document.getElementById('card-operations'),
+            document.getElementById('card-enqueue'),
+            document.getElementById('card-pointers'),
+            document.getElementById('card-scenarios'),
+            document.getElementById('card-theory')
+        ].filter(Boolean);
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    pills.forEach(pill => {
+                        if (pill.getAttribute('href') === `#${id}`) {
+                            pills.forEach(p => p.classList.remove('active'));
+                            pill.classList.add('active');
+                            pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.35 });
+
+        sections.forEach(sec => observer.observe(sec));
     }
 }
