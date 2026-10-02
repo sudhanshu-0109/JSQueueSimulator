@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MediQueue — Assistant / Reception Dashboard</title>
+    <meta name="description" content="Assistant OPD Reception Terminal for registering patients and generating sequential tokens into the FIFO queue.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/assistant.css">
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <header class="top-nav">
+        <a href="index.html" class="nav-brand">
+            <div class="nav-logo-icon">
+                <i data-lucide="activity" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="nav-title-group">
+                <h1>MediQueue</h1>
+                <p>Assistant · OPD Reception</p>
+            </div>
+        </a>
+
+        <div class="nav-links">
+            <a href="assistant.html" class="nav-link active">
+                <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+                <span>Assistant</span>
+            </a>
+            <a href="doctor.html" class="nav-link">
+                <i data-lucide="stethoscope" style="width: 15px; height: 15px;"></i>
+                <span>Doctor Room</span>
+            </a>
+            <a href="display.html" class="nav-link">
+                <i data-lucide="tv" style="width: 15px; height: 15px;"></i>
+                <span>Public Display</span>
+            </a>
+        </div>
+
+        <div class="nav-status">
+            <span class="pulse-dot"></span>
+            <span>OPD Room 04 Synced</span>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-container">
+
+        <!-- KPI Metrics Grid -->
+        <section class="kpi-grid" aria-label="OPD Statistics">
+            <!-- 1. Waiting Count -->
+            <div class="kpi-card">
+                <div class="kpi-icon blue">
+                    <i data-lucide="users" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Waiting Patients</span>
+                    <span class="kpi-value" id="kpi-waiting">0</span>
+                    <span class="kpi-subtext">In FIFO Queue</span>
+                </div>
+            </div>
+
+            <!-- 2. Currently Consulting -->
+            <div class="kpi-card">
+                <div class="kpi-icon green">
+                    <i data-lucide="stethoscope" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Now Serving</span>
+                    <span class="kpi-value" id="kpi-serving" style="color: var(--success);">—</span>
+                    <span class="kpi-subtext" id="kpi-serving-name">No active consult</span>
+                </div>
+            </div>
+
+            <!-- 3. Next Token -->
+            <div class="kpi-card">
+                <div class="kpi-icon amber">
+                    <i data-lucide="ticket" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Next Token</span>
+                    <span class="kpi-value" id="kpi-next-token" style="color: var(--warning);">T-001</span>
+                    <span class="kpi-subtext">Ready to issue</span>
+                </div>
+            </div>
+
+            <!-- 4. Total Completed -->
+            <div class="kpi-card">
+                <div class="kpi-icon purple">
+                    <i data-lucide="check-circle" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Completed</span>
+                    <span class="kpi-value" id="kpi-completed">0</span>
+                    <span class="kpi-subtext">Today's Consults</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assistant Workspace Layout (Form + Waiting Queue) -->
+        <div class="assistant-layout">
+
+            <!-- Left: Patient Registration (Enqueue) -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i data-lucide="user-plus" style="width: 18px; height: 18px; color: var(--primary);"></i>
+                        <span>Register Patient</span>
+                    </div>
+                    <span class="badge badge-token">ENQUEUE</span>
+                </div>
+
+                <div class="card-body">
+                    <form id="registration-form">
+                        <!-- Patient Name -->
+                        <div class="form-group">
+                            <label for="patient-name" class="form-label">
+                                <span>Patient Full Name</span>
+                                <span class="req">* Required</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i data-lucide="user" class="input-icon" style="width: 16px; height: 16px;"></i>
+                                <input type="text" id="patient-name" class="form-input" placeholder="e.g. Rahul Sharma" autocomplete="off" required autofocus>
+                            </div>
+
+                            <!-- Quick Preset Patient Names -->
+                            <div class="quick-chips">
+                                <span class="quick-chip-label">Quick:</span>
+                                <button type="button" class="chip-btn name-chip">Rahul Sharma</button>
+                                <button type="button" class="chip-btn name-chip">Priya Patel</button>
+                                <button type="button" class="chip-btn name-chip">Aman Kumar</button>
+                                <button type="button" class="chip-btn name-chip">Sneha Singh</button>
+                            </div>
+                        </div>
+
+                        <!-- Age & Phone -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patient-age" class="form-label">
+                                    <span>Age</span>
+                                    <span class="opt">Years</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="calendar" class="input-icon" style="width: 16px; height: 16px;"></i>
+                                    <input type="number" id="patient-age" class="form-input" placeholder="e.g. 24" min="1" max="120">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="patient-phone" class="form-label">
+                                    <span>Phone Number</span>
+                                    <span class="opt">Optional</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="phone" class="input-icon" style="width: 16px; height: 16px;"></i>
+                                    <input type="tel" id="patient-phone" class="form-input" placeholder="e.g. 9876543210">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: var(--space-2);">
+                            <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+                            <span>Generate Token &amp; Enqueue</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Right: Current Waiting Queue Table -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i data-lucide="list-ordered" style="width: 18px; height: 18px; color: var(--primary);"></i>
+                        <span>Waiting Queue</span>
+                    </div>
+                    <span class="badge badge-waiting" id="queue-count-badge">0 Waiting</span>
+                </div>
+
+                <div class="card-body" style="padding: 0;">
+                    <div class="queue-table-wrapper" id="queue-container">
+                        <!-- Populated dynamically by assistant.js -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Token Generated Confirmation Modal -->
+    <div class="modal-overlay" id="token-modal" role="dialog" aria-modal="true" aria-labelledby="token-modal-title">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="card-title" id="token-modal-title">
+                    <i data-lucide="check-circle-2" style="width: 18px; height: 18px; color: var(--success);"></i>
+                    <span>Token Generated &amp; Patient Enqueued</span>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" id="token-modal-close" aria-label="Close modal">
+                    <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="token-modal-card">
+                    <span class="token-modal-badge">OPD TOKEN</span>
+                    <div class="token-modal-number" id="modal-token-num">T-001</div>
+                    <div class="token-modal-patient" id="modal-patient-name">Rahul Sharma</div>
+                    <div class="token-modal-details" id="modal-patient-details">Age 24 • Position #1 in Queue</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" id="token-modal-ok">
+                    <span>Done</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div>
+            <strong>MediQueue Assistant Terminal</strong> • Hospital OPD Department
+        </div>
+        <div>
+            <span class="footer-dsa-badge">Queue Operation: enqueue(patient) [O(1)]</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/queue.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/token.js"></script>
+    <script src="js/assistant.js"></script>
+</body>
+</html>

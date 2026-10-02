@@ -2,737 +2,194 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QueueFlow — Interactive FIFO Queue Management & Visualization System</title>
-    <meta name="description" content="A comprehensive, academic-grade interactive Queue data structure simulator demonstrating the FIFO (First In, First Out) principle with O(1) constant-time pointer architecture.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MediQueue — Hospital OPD Token &amp; Queue Management System</title>
+    <meta name="description" content="A real-time hospital OPD token management system where the Assistant registers patients to a FIFO queue and the Doctor processes them sequentially.">
 
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
 
-    <div id="app-container">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+        <a href="index.html" class="nav-brand">
+            <div class="nav-logo-icon">
+                <i data-lucide="activity" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="nav-title-group">
+                <h1>MediQueue</h1>
+                <p>Hospital OPD Queue System</p>
+            </div>
+        </a>
 
-        <!-- ==================================================================
-             Header Section
-             ================================================================== -->
-        <header class="app-header">
-            <div class="brand-section">
-                <div class="brand-icon">
-                    <i data-lucide="layers" style="width: 24px; height: 24px;"></i>
-                </div>
-                <div class="brand-title-group">
-                    <h1>
-                        QueueFlow
-                        <span class="badge badge-primary badge-mono">v1.0</span>
-                    </h1>
-                    <p>Interactive FIFO Queue Management &amp; Data Structure Simulator</p>
-                </div>
-            </div>
+        <div class="nav-links">
+            <a href="assistant.html" class="nav-link">
+                <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+                <span>Assistant</span>
+            </a>
+            <a href="doctor.html" class="nav-link">
+                <i data-lucide="stethoscope" style="width: 15px; height: 15px;"></i>
+                <span>Doctor</span>
+            </a>
+            <a href="display.html" class="nav-link">
+                <i data-lucide="tv" style="width: 15px; height: 15px;"></i>
+                <span>Public Display</span>
+            </a>
+        </div>
+    </header>
 
-            <div class="header-badges">
-                <span class="badge badge-indigo">
-                    <i data-lucide="cpu" style="width: 14px; height: 14px;"></i>
-                    FIFO Principle
-                </span>
-                <span class="badge badge-primary">
-                    <i data-lucide="zap" style="width: 14px; height: 14px;"></i>
-                    O(1) Pointers
-                </span>
-                <span class="badge badge-success">
-                    <i data-lucide="graduation-cap" style="width: 14px; height: 14px;"></i>
-                    DSA Mini Project
-                </span>
+    <!-- Portal Selection Main -->
+    <main class="portal-wrapper">
+        <section class="portal-hero">
+            <div class="portal-badge">
+                <i data-lucide="git-commit" style="width: 14px; height: 14px;"></i>
+                <span>FIFO Queue Architecture</span>
             </div>
-
-            <div class="header-actions">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-start-simulation">
-                    <i data-lucide="play-circle" style="width: 16px; height: 16px;"></i>
-                    <span>Run Demo Simulation</span>
-                </button>
-                <button type="button" class="btn btn-outline btn-sm" id="btn-viva-modal">
-                    <i data-lucide="help-circle" style="width: 16px; height: 16px;"></i>
-                    <span>Viva Voce Prep</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- ==================================================================
-             Simulation Banner (Active during Auto Demonstration)
-             ================================================================== -->
-        <section class="simulation-banner" id="sim-banner" aria-live="polite">
-            <div class="sim-info">
-                <span class="sim-badge" id="sim-step-badge">Step 1 / 6</span>
-                <div class="sim-details">
-                    <div class="sim-step-title" id="sim-step-title">Enqueue Operation</div>
-                    <div class="sim-explanation" id="sim-explanation">Alice arrives and enters at the REAR of the queue.</div>
-                </div>
-            </div>
-            <div class="sim-controls">
-                <button type="button" class="btn btn-danger btn-sm" id="btn-stop-simulation">
-                    <i data-lucide="square" style="width: 14px; height: 14px;"></i>
-                    <span>Stop Demo</span>
-                </button>
-            </div>
+            <h2 class="portal-title">Select OPD Dashboard</h2>
+            <p class="portal-subtitle">Choose your operational terminal to interact with the synchronized patient queue.</p>
         </section>
 
-        <!-- ==================================================================
-             Statistics Cards Grid
-             ================================================================== -->
-        <section class="stats-grid" aria-label="Queue Statistics">
-            <!-- Stat 1: Queue Size -->
-            <div class="stat-card">
-                <div class="stat-icon blue">
-                    <i data-lucide="users" style="width: 24px; height: 24px;"></i>
+        <!-- Role Selector Grid -->
+        <div class="role-grid">
+            <!-- 1. Assistant Dashboard -->
+            <a href="assistant.html" class="role-card">
+                <div class="role-icon-box blue">
+                    <i data-lucide="user-plus" style="width: 26px; height: 26px;"></i>
                 </div>
-                <div class="stat-content">
-                    <span class="stat-label">Queue Size (size())</span>
-                    <span class="stat-value" id="stat-size">00</span>
-                    <span class="stat-subtext">Members Waiting in Line</span>
+                <span class="role-tag blue">ENQUEUE Operation</span>
+                <div class="role-name">Assistant / Reception</div>
+                <div class="role-desc">Register arriving patients, generate sequential OPD tokens (T-001, T-002...), and enqueue into the waiting line.</div>
+                <div class="role-action">
+                    <span>Open Terminal</span>
+                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
                 </div>
-            </div>
-
-            <!-- Stat 2: Front Member -->
-            <div class="stat-card">
-                <div class="stat-icon green">
-                    <i data-lucide="arrow-right-from-line" style="width: 24px; height: 24px;"></i>
-                </div>
-                <div class="stat-content">
-                    <span class="stat-label">Front Member (front())</span>
-                    <span class="stat-value" id="stat-front">—</span>
-                    <span class="stat-subtext">Next to be served</span>
-                </div>
-            </div>
-
-            <!-- Stat 3: Rear Member -->
-            <div class="stat-card">
-                <div class="stat-icon purple">
-                    <i data-lucide="corner-down-right" style="width: 24px; height: 24px;"></i>
-                </div>
-                <div class="stat-content">
-                    <span class="stat-label">Rear Member (rear())</span>
-                    <span class="stat-value" id="stat-rear">—</span>
-                    <span class="stat-subtext">Most recent arrival</span>
-                </div>
-            </div>
-
-            <!-- Stat 4: Queue Status -->
-            <div class="stat-card">
-                <div class="stat-icon amber">
-                    <i data-lucide="activity" style="width: 24px; height: 24px;"></i>
-                </div>
-                <div class="stat-content">
-                    <span class="stat-label">Queue Status (isEmpty())</span>
-                    <span class="stat-value" id="stat-status">EMPTY</span>
-                    <span class="stat-subtext">FIFO Queue State</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================================================================
-             Mobile Quick Navigation (Visible on mobile & tablet for instant presentation jumping)
-             ================================================================== -->
-        <nav class="mobile-quick-nav" id="mobile-quick-nav" aria-label="Mobile section navigation">
-            <a href="#card-runway" class="quick-nav-pill active">
-                <i data-lucide="eye" style="width: 13px; height: 13px;"></i>
-                <span>Queue Runway</span>
             </a>
-            <a href="#card-operations" class="quick-nav-pill">
-                <i data-lucide="sliders" style="width: 13px; height: 13px;"></i>
-                <span>Operations</span>
+
+            <!-- 2. Doctor Dashboard -->
+            <a href="doctor.html" class="role-card">
+                <div class="role-icon-box green">
+                    <i data-lucide="stethoscope" style="width: 26px; height: 26px;"></i>
+                </div>
+                <span class="role-tag green">DEQUEUE Operation</span>
+                <div class="role-name">Doctor Consultation</div>
+                <div class="role-desc">View the live waiting queue, call the next patient in strict FIFO order, conduct consultations, and mark as completed.</div>
+                <div class="role-action">
+                    <span>Open Room 04</span>
+                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                </div>
             </a>
-            <a href="#card-enqueue" class="quick-nav-pill">
-                <i data-lucide="user-plus" style="width: 13px; height: 13px;"></i>
-                <span>+ Enqueue</span>
+
+            <!-- 3. Public Queue Display -->
+            <a href="display.html" class="role-card">
+                <div class="role-icon-box purple">
+                    <i data-lucide="tv" style="width: 26px; height: 26px;"></i>
+                </div>
+                <span class="role-tag purple">Real-Time Monitor</span>
+                <div class="role-name">Waiting Lounge Display</div>
+                <div class="role-desc">Public TV screen placed outside OPD rooms displaying the active NOW SERVING token and next patient in line.</div>
+                <div class="role-action">
+                    <span>Launch Display</span>
+                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                </div>
             </a>
-            <a href="#card-pointers" class="quick-nav-pill">
-                <i data-lucide="terminal" style="width: 13px; height: 13px;"></i>
-                <span>Pointers</span>
-            </a>
-            <a href="#card-scenarios" class="quick-nav-pill">
-                <i data-lucide="briefcase" style="width: 13px; height: 13px;"></i>
-                <span>Scenarios</span>
-            </a>
-            <a href="#card-theory" class="quick-nav-pill">
-                <i data-lucide="book-open" style="width: 13px; height: 13px;"></i>
-                <span>Viva &amp; Theory</span>
-            </a>
-        </nav>
+        </div>
 
-        <!-- ==================================================================
-             Main Content Grid: Controls (Left) & Visualization (Right)
-             ================================================================== -->
-        <main class="dashboard-grid">
-
-            <!-- --------------------------------------------------------------
-                 Left Column: Inputs & Operations
-                 -------------------------------------------------------------- -->
-            <div class="controls-column">
-
-                <!-- Card 1: Add Member (Enqueue) -->
-                <div class="card" id="card-enqueue">
-                    <div class="card-header">
-                        <div class="card-header-left">
-                            <span class="card-title">
-                                <i data-lucide="user-plus" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                                Add Member (ENQUEUE)
-                            </span>
-                        </div>
-                        <span class="badge badge-primary badge-mono">O(1)</span>
-                    </div>
-
-                    <div class="card-body">
-                        <form id="enqueue-form">
-                            <div class="form-group">
-                                <label for="member-name" class="form-label">
-                                    <span>Member Name</span>
-                                    <span style="color: var(--danger); font-size: 0.75rem;">* Required</span>
-                                </label>
-                                <div class="input-wrapper">
-                                    <i data-lucide="user" class="input-icon" style="width: 16px; height: 16px;"></i>
-                                    <input type="text" id="member-name" class="form-input" placeholder="e.g. Sudhanshu or Alice" autocomplete="off" required>
-                                </div>
-                                <div class="suggestion-pills">
-                                    <span class="pill-label">Quick:</span>
-                                    <button type="button" class="pill-btn suggestion-pill-name">Alice</button>
-                                    <button type="button" class="pill-btn suggestion-pill-name">Rahul</button>
-                                    <button type="button" class="pill-btn suggestion-pill-name">Priya</button>
-                                    <button type="button" class="pill-btn suggestion-pill-name">David</button>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="member-id" class="form-label">
-                                    <span>Member ID / Token</span>
-                                    <span class="optional">(Optional - Auto generated)</span>
-                                </label>
-                                <div class="input-wrapper">
-                                    <i data-lucide="hash" class="input-icon" style="width: 16px; height: 16px;"></i>
-                                    <input type="text" id="member-id" class="form-input" placeholder="e.g. Q-005 or leave blank" autocomplete="off">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                                <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
-                                <span>+ Enqueue Member to REAR</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Card 2: Queue Operations -->
-                <div class="card" id="card-operations">
-                    <div class="card-header">
-                        <div class="card-header-left">
-                            <span class="card-title">
-                                <i data-lucide="sliders" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                                Queue Operations
-                            </span>
-                        </div>
-                        <span class="card-subtitle">DSA Methods</span>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="ops-grid">
-                            <!-- Operation: Dequeue -->
-                            <button type="button" class="btn-op dequeue-btn" id="btn-dequeue" title="Remove the front member from the queue">
-                                <i data-lucide="arrow-down-to-line" style="width: 22px; height: 22px; color: var(--danger);"></i>
-                                <span class="op-title">DEQUEUE / SERVE</span>
-                                <span class="op-desc">Removes Front Member (O(1))</span>
-                            </button>
-
-                            <!-- Operation: Peek Front -->
-                            <button type="button" class="btn-op" id="btn-peek" title="Inspect front member without removing">
-                                <i data-lucide="eye" style="width: 22px; height: 22px; color: var(--primary);"></i>
-                                <span class="op-title">PEEK FRONT</span>
-                                <span class="op-desc">Inspect First Element (O(1))</span>
-                            </button>
-
-                            <!-- Operation: View Rear -->
-                            <button type="button" class="btn-op" id="btn-rear" title="Inspect rear member without removing">
-                                <i data-lucide="corner-down-right" style="width: 22px; height: 22px; color: var(--purple);"></i>
-                                <span class="op-title">VIEW REAR</span>
-                                <span class="op-desc">Inspect Last Element (O(1))</span>
-                            </button>
-
-                            <!-- Operation: Reset -->
-                            <button type="button" class="btn-op" id="btn-reset" title="Clear all elements from queue">
-                                <i data-lucide="rotate-ccw" style="width: 22px; height: 22px; color: var(--text-muted);"></i>
-                                <span class="op-title">RESET QUEUE</span>
-                                <span class="op-desc">Clear &amp; Reset Pointers</span>
-                            </button>
-                        </div>
-
-                        <!-- Supporting Feature: Search Member -->
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label for="search-input" class="form-label">
-                                <span>Search Queue</span>
-                                <span class="optional">Supporting Feature (O(n))</span>
-                            </label>
-                            <form id="search-form" class="search-container">
-                                <div class="input-wrapper">
-                                    <i data-lucide="search" class="input-icon" style="width: 16px; height: 16px;"></i>
-                                    <input type="text" id="search-input" class="form-input" placeholder="Search by name or ID..." autocomplete="off">
-                                </div>
-                                <button type="submit" class="btn btn-outline" title="Find member">
-                                    <span>Find</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Preset Scenarios -->
-                <div class="card" id="card-scenarios">
-                    <div class="card-header">
-                        <div class="card-header-left">
-                            <span class="card-title">
-                                <i data-lucide="briefcase" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                                Demo Scenarios
-                            </span>
-                        </div>
-                        <span class="card-subtitle">Real-world Contexts</span>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="scenarios-list">
-                            <div class="scenario-item active" data-scenario="general">
-                                <div class="scenario-left">
-                                    <i data-lucide="users" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                                    <div>
-                                        <div class="scenario-name">General Service Queue</div>
-                                        <div class="scenario-sub">Default service line with tokens Q-001...</div>
-                                    </div>
-                                </div>
-                                <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-light);"></i>
-                            </div>
-
-                            <div class="scenario-item" data-scenario="hospital">
-                                <div class="scenario-left">
-                                    <i data-lucide="heart-pulse" style="width: 18px; height: 18px; color: var(--danger);"></i>
-                                    <div>
-                                        <div class="scenario-name">Hospital OPD &amp; Triage</div>
-                                        <div class="scenario-sub">Patients &amp; Doctor consults (PAT-101...)</div>
-                                    </div>
-                                </div>
-                                <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-light);"></i>
-                            </div>
-
-                            <div class="scenario-item" data-scenario="bank">
-                                <div class="scenario-left">
-                                    <i data-lucide="landmark" style="width: 18px; height: 18px; color: var(--success);"></i>
-                                    <div>
-                                        <div class="scenario-name">Bank Cashier Counter</div>
-                                        <div class="scenario-sub">Cash deposits &amp; tokens (TKN-801...)</div>
-                                    </div>
-                                </div>
-                                <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-light);"></i>
-                            </div>
-
-                            <div class="scenario-item" data-scenario="college">
-                                <div class="scenario-left">
-                                    <i data-lucide="graduation-cap" style="width: 18px; height: 18px; color: var(--indigo);"></i>
-                                    <div>
-                                        <div class="scenario-name">College Registration &amp; Fees</div>
-                                        <div class="scenario-sub">Students &amp; Roll numbers (STU-501...)</div>
-                                    </div>
-                                </div>
-                                <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-light);"></i>
-                            </div>
-
-                            <div class="scenario-item" data-scenario="food">
-                                <div class="scenario-left">
-                                    <i data-lucide="utensils" style="width: 18px; height: 18px; color: var(--warning);"></i>
-                                    <div>
-                                        <div class="scenario-name">Fast Food Order Counter</div>
-                                        <div class="scenario-sub">Dine-in / Takeaway orders (ORD-301...)</div>
-                                    </div>
-                                </div>
-                                <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-light);"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+        <!-- Quick System Status & Demo Data Bar -->
+        <div class="portal-quick-status">
+            <div class="quick-status-left">
+                <span class="pulse-dot"></span>
+                <span><strong>Live Queue Status:</strong> <span id="portal-waiting-count">0</span> Patients Waiting in FIFO Line</span>
             </div>
-
-            <!-- --------------------------------------------------------------
-                 Right Column: Live Queue Visualization & Inspector
-                 -------------------------------------------------------------- -->
-            <div class="queue-column">
-
-                <!-- Card 1: Live Queue Visual Runway -->
-                <div class="card" id="card-runway">
-                    <div class="card-header">
-                        <div class="card-header-left">
-                            <span class="card-title">
-                                <i data-lucide="git-commit" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                                Live Queue Visualization
-                            </span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span class="badge badge-success">
-                                <i data-lucide="check" style="width: 12px; height: 12px;"></i>
-                                FIFO Order
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="runway-wrapper">
-                            <!-- Directional Header -->
-                            <div class="runway-header">
-                                <div class="runway-direction-badge badge-front-indicator">
-                                    <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
-                                    <span>FRONT (Exit / Dequeue)</span>
-                                </div>
-
-                                <div class="runway-flow-caption">
-                                    <span>First-In</span>
-                                    <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                                    <span>First-Out</span>
-                                </div>
-
-                                <div class="runway-direction-badge badge-rear-indicator">
-                                    <span>REAR (Entry / Enqueue)</span>
-                                    <i data-lucide="log-in" style="width: 14px; height: 14px;"></i>
-                                </div>
-                            </div>
-
-                            <!-- Live Runway Horizontal View -->
-                            <div class="queue-runway" id="queue-runway" role="region" aria-label="Visual representation of the queue">
-                                <!-- Dynamically populated by UI.renderQueue() -->
-                            </div>
-
-                            <!-- Mobile Swipe Hint -->
-                            <div class="runway-mobile-hint">
-                                <i data-lucide="chevrons-left" style="width: 13px; height: 13px;"></i>
-                                <span>Swipe horizontally to view full queue</span>
-                                <i data-lucide="chevrons-right" style="width: 13px; height: 13px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2: DSA State & Pointers Inspector -->
-                <div class="card" id="card-pointers">
-                    <div class="card-header">
-                        <div class="card-header-left">
-                            <span class="card-title">
-                                <i data-lucide="terminal" style="width: 18px; height: 18px; color: var(--indigo);"></i>
-                                Data Structure Internal State &amp; Pointers
-                            </span>
-                        </div>
-                        <span class="badge badge-indigo badge-mono">O(1) Memory Architecture</span>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="pointers-inspector">
-                            <div class="pointer-metric">
-                                <span class="pointer-metric-title">frontIndex</span>
-                                <span class="pointer-metric-value" id="inspector-front" style="color: #10B981;">0</span>
-                            </div>
-                            <div class="pointer-metric">
-                                <span class="pointer-metric-title">rearIndex</span>
-                                <span class="pointer-metric-value" id="inspector-rear" style="color: #8B5CF6;">0</span>
-                            </div>
-                            <div class="pointer-metric">
-                                <span class="pointer-metric-title">Current Elements</span>
-                                <span class="pointer-metric-value" id="inspector-size" style="color: var(--primary);">0</span>
-                            </div>
-
-                            <div class="pointer-formula" id="inspector-formula">
-                                <span>Formula: <code>size = rearIndex - frontIndex</code></span>
-                                <span><strong>0 - 0 = 0</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Operation History Log -->
-                <div class="card" id="card-history">
-                    <div class="card-header">
-                        <div class="card-header-left">
-                            <span class="card-title">
-                                <i data-lucide="clock" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                                Operation History
-                            </span>
-                        </div>
-                        <span class="card-subtitle">Last 15 Operations</span>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="history-list" id="history-list">
-                            <div class="empty-history" style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: var(--space-4);">
-                                No operations recorded yet.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </main>
-
-        <!-- ==================================================================
-             Educational DSA Section (Concept, Complexity, Applications)
-             ================================================================== -->
-        <section class="educational-section" id="card-theory" aria-label="Educational DSA Guide">
-
-            <!-- Card 1: How Queue Works -->
-            <div class="edu-card">
-                <div class="edu-card-title">
-                    <i data-lucide="book-open" style="width: 20px; height: 20px; color: var(--primary);"></i>
-                    <span>How Queue Works (FIFO)</span>
-                </div>
-
-                <div class="fifo-diagram-container">
-                    <div class="fifo-diagram-row">
-                        <span style="font-weight: 700; color: #15803D;">EXIT ←</span>
-                        <div class="fifo-node front">FRONT (Alice)</div>
-                        <span>←</span>
-                        <div class="fifo-node">Rahul</div>
-                        <span>←</span>
-                        <div class="fifo-node">Priya</div>
-                        <span>←</span>
-                        <div class="fifo-node rear">REAR (David)</div>
-                        <span style="font-weight: 700; color: #7E22CE;">← ENTRY</span>
-                    </div>
-                </div>
-
-                <p class="fifo-desc-text">
-                    A <strong>Queue</strong> is a linear data structure that adheres strictly to the <strong>First-In, First-Out (FIFO)</strong> principle.
-                    The element inserted first is guaranteed to be the first element removed. Elements enter via <code>enqueue()</code> at the <strong>Rear</strong> and leave via <code>dequeue()</code> from the <strong>Front</strong>.
-                </p>
-            </div>
-
-            <!-- Card 2: Big-O Time Complexity -->
-            <div class="edu-card">
-                <div class="edu-card-title">
-                    <i data-lucide="calculator" style="width: 20px; height: 20px; color: var(--indigo);"></i>
-                    <span>Time &amp; Space Complexity</span>
-                </div>
-
-                <table class="complexity-table">
-                    <thead>
-                        <tr>
-                            <th>Operation</th>
-                            <th>Complexity</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>ENQUEUE</strong></td>
-                            <td><span class="complexity-tag">O(1)</span></td>
-                            <td>Insert at rear pointer</td>
-                        </tr>
-                        <tr>
-                            <td><strong>DEQUEUE</strong></td>
-                            <td><span class="complexity-tag">O(1)</span></td>
-                            <td>Delete at front pointer</td>
-                        </tr>
-                        <tr>
-                            <td><strong>PEEK / FRONT</strong></td>
-                            <td><span class="complexity-tag">O(1)</span></td>
-                            <td>Inspect first element</td>
-                        </tr>
-                        <tr>
-                            <td><strong>REAR</strong></td>
-                            <td><span class="complexity-tag">O(1)</span></td>
-                            <td>Inspect last element</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SIZE / EMPTY</strong></td>
-                            <td><span class="complexity-tag">O(1)</span></td>
-                            <td>Constant index math</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SEARCH</strong></td>
-                            <td><span class="complexity-tag" style="background:#FFFBEB; color:#B45309;">O(n)</span></td>
-                            <td>Linear pass across items</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="complexity-note">
-                    QueueFlow achieves true <strong>O(1)</strong> dequeues using front/rear index hashing instead of <code>Array.shift()</code> which is O(n).
-                </div>
-            </div>
-
-            <!-- Card 3: Real-World Applications -->
-            <div class="edu-card">
-                <div class="edu-card-title">
-                    <i data-lucide="globe" style="width: 20px; height: 20px; color: var(--success);"></i>
-                    <span>Real-World Applications</span>
-                </div>
-
-                <div class="apps-grid">
-                    <div class="app-pill">
-                        <i data-lucide="cpu" style="width: 16px; height: 16px; color: var(--primary);"></i>
-                        <span>CPU Scheduling</span>
-                    </div>
-                    <div class="app-pill">
-                        <i data-lucide="printer" style="width: 16px; height: 16px; color: var(--indigo);"></i>
-                        <span>Printer Spoolers</span>
-                    </div>
-                    <div class="app-pill">
-                        <i data-lucide="wifi" style="width: 16px; height: 16px; color: var(--purple);"></i>
-                        <span>Network Buffers</span>
-                    </div>
-                    <div class="app-pill">
-                        <i data-lucide="git-branch" style="width: 16px; height: 16px; color: var(--success);"></i>
-                        <span>BFS Graph Search</span>
-                    </div>
-                    <div class="app-pill">
-                        <i data-lucide="server" style="width: 16px; height: 16px; color: var(--warning);"></i>
-                        <span>Web Server Queues</span>
-                    </div>
-                    <div class="app-pill">
-                        <i data-lucide="ticket" style="width: 16px; height: 16px; color: var(--danger);"></i>
-                        <span>Ticketing Systems</span>
-                    </div>
-                </div>
-
-                <p class="fifo-desc-text">
-                    Queues are indispensable in computing whenever asynchronous resources are shared between producers and consumers at differing speeds.
-                </p>
-            </div>
-
-        </section>
-
-        <!-- ==================================================================
-             Footer
-             ================================================================== -->
-        <footer class="app-footer">
-            <div>
-                <strong>QueueFlow</strong> — Interactive Queue Management &amp; Visualization System
-            </div>
-            <div>
-                Data Structures &amp; Algorithms Mini-Project • Pure HTML5 + CSS3 + Vanilla ES6+ JS
-            </div>
-        </footer>
-
-    </div>
-
-    <!-- ======================================================================
-         Generic Modal (Peek Front / View Rear / Search Result)
-         ====================================================================== -->
-    <div class="modal-overlay" id="generic-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal-box">
-            <div class="modal-header">
-                <div class="modal-title" id="modal-title">
-                    <i data-lucide="info" style="width: 20px; height: 20px;"></i>
-                    <span>Member Details</span>
-                </div>
-                <button type="button" class="btn btn-outline btn-sm btn-icon-only" id="modal-close-btn" aria-label="Close modal">
-                    <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+            <div class="quick-status-right">
+                <button type="button" class="btn btn-outline btn-sm" id="btn-load-demo">
+                    <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+                    <span>Load Demo Data</span>
                 </button>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <!-- Dynamically populated by UI.showMemberModal() -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" onclick="UI.closeModal()">Close</button>
+                <button type="button" class="btn btn-outline btn-sm" id="btn-reset-system" style="color: var(--danger);">
+                    <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
+                    <span>Reset Queue</span>
+                </button>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- ======================================================================
-         Viva Voce Questions & Answers Modal
-         ====================================================================== -->
-    <div class="modal-overlay" id="viva-modal" role="dialog" aria-modal="true" aria-labelledby="viva-title">
-        <div class="modal-box" style="max-width: 680px;">
-            <div class="modal-header">
-                <div class="modal-title" id="viva-title">
-                    <i data-lucide="graduation-cap" style="width: 22px; height: 22px; color: var(--primary);"></i>
-                    <span>Viva Voce &amp; Academic Explanations</span>
-                </div>
-                <button type="button" class="btn btn-outline btn-sm btn-icon-only" id="viva-close-btn" aria-label="Close modal">
-                    <i data-lucide="x" style="width: 16px; height: 16px;"></i>
-                </button>
-            </div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
-            <div class="modal-body">
-                <!-- Question 1 -->
-                <div class="viva-item">
-                    <div class="viva-question">
-                        <span>1. What is a Queue and what principle does it follow?</span>
-                    </div>
-                    <div class="viva-answer">
-                        A Queue is a linear data structure that operates under the <strong>FIFO (First-In, First-Out)</strong> principle. The first item inserted into the queue is the first item to be removed. Insertions occur at the <em>Rear</em>, while deletions occur at the <em>Front</em>.
-                    </div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="viva-item">
-                    <div class="viva-question">
-                        <span>2. What is the difference between FRONT and REAR?</span>
-                    </div>
-                    <div class="viva-answer">
-                        <strong>FRONT</strong> points to the index of the first item waiting in line. It is where <code>dequeue()</code> or <code>peek()</code> operates. <strong>REAR</strong> points to the next available slot where <code>enqueue()</code> adds new items.
-                    </div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="viva-item">
-                    <div class="viva-question">
-                        <span>3. Why does Array.shift() cause O(n) dequeue time in JS?</span>
-                    </div>
-                    <div class="viva-answer">
-                        When using standard arrays, removing the first item with <code>array.shift()</code> requires the JS engine to re-index and shift every single remaining element one position to the left in memory, taking <strong>O(n)</strong> time. By using pointer indices (<code>frontIndex</code> and <code>rearIndex</code>) with an object/map, our implementation achieves <strong>O(1)</strong> constant time.
-                    </div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="viva-item">
-                    <div class="viva-question">
-                        <span>4. What is Queue Underflow and Overflow?</span>
-                    </div>
-                    <div class="viva-answer">
-                        <strong>Underflow:</strong> Attempting to remove (dequeue) an item when the queue is already empty. Our app catches this and notifies the user.<br>
-                        <strong>Overflow:</strong> Attempting to insert (enqueue) into a fixed-capacity queue when it is already full (applies to bounded/circular queues).
-                    </div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="viva-item">
-                    <div class="viva-question">
-                        <span>5. What are the key real-world applications of queues?</span>
-                    </div>
-                    <div class="viva-answer">
-                        CPU round-robin scheduling, OS printer spooling, network routers packet buffers, breadth-first search (BFS) graph traversals, and asynchronous message broker queues (RabbitMQ, Kafka).
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('viva-modal').classList.remove('active')">Got it</button>
-            </div>
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div>
+            <strong>MediQueue</strong> — Hospital OPD Token &amp; Queue Management System
         </div>
-    </div>
+        <div>
+            <span class="footer-dsa-badge">Core Engine: O(1) Queue Pointer Architecture</span>
+        </div>
+    </footer>
 
-    <!-- ======================================================================
-         Toast Notifications Container
-         ====================================================================== -->
-    <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
-
-    <!-- ======================================================================
-         JavaScript Source Files
-         Queue class MUST be loaded first as the source of truth!
-         ====================================================================== -->
+    <!-- Scripts -->
     <script src="js/queue.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/token.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
 
+            const countEl = document.getElementById('portal-waiting-count');
+            const btnDemo = document.getElementById('btn-load-demo');
+            const btnReset = document.getElementById('btn-reset-system');
+
+            function updateStatus() {
+                const q = MediStorage.getQueue();
+                if (countEl) countEl.textContent = q.size();
+            }
+
+            updateStatus();
+
+            MediStorage.onSync(() => {
+                updateStatus();
+            });
+
+            if (btnDemo) {
+                btnDemo.addEventListener('click', () => {
+                    MediStorage.loadDemoData();
+                    updateStatus();
+                    showToast('Demo patients (T-001 to T-004) loaded successfully!', 'success');
+                });
+            }
+
+            if (btnReset) {
+                btnReset.addEventListener('click', () => {
+                    if (confirm('Clear all patient queues and reset tokens to T-001?')) {
+                        MediStorage.clearAll();
+                        updateStatus();
+                        showToast('Queue system reset cleanly.', 'info');
+                    }
+                });
+            }
+
+            function showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `<span class="toast-msg">${message}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 250);
+                }, 3500);
+            }
+        });
+    </script>
 </body>
 </html>

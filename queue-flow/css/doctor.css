@@ -1,0 +1,353 @@
+/* ==========================================================================
+   MediQueue - Doctor Dashboard Stylesheet
+   ========================================================================== */
+
+.doctor-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   Hero Card: NOW SERVING
+   -------------------------------------------------------------------------- */
+.serving-hero-card {
+    background: var(--bg-surface);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.serving-hero-card.has-patient {
+    border-color: var(--success-border);
+    box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.15), 0 4px 6px -4px rgba(22, 163, 74, 0.05);
+}
+
+.serving-header {
+    background: #FAFCFE;
+    padding: var(--space-3) var(--space-6);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.serving-badge-title {
+    font-size: 0.775rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.serving-hero-card.has-patient .serving-badge-title {
+    color: var(--success);
+}
+
+.serving-body {
+    padding: var(--space-8) var(--space-6);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.serving-token-display {
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.serving-hero-card.has-patient .serving-token-display {
+    color: var(--success);
+}
+
+.serving-patient-name {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-top: var(--space-1);
+}
+
+.serving-patient-meta {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.serving-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 420px;
+}
+
+/* Empty Hero State (No Active Patient) */
+.serving-empty-state {
+    padding: var(--space-6) var(--space-4);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.serving-empty-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.serving-empty-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 320px;
+}
+
+/* --------------------------------------------------------------------------
+   Doctor Split Section: Next Patient & Waiting Queue
+   -------------------------------------------------------------------------- */
+.doctor-split-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: var(--space-6);
+    align-items: start;
+}
+
+/* Next in line card */
+.next-patient-box {
+    background: #FFFBEB;
+    border: 1.5px solid var(--warning-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.next-token-tag {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--warning-hover);
+    line-height: 1;
+}
+
+.next-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.next-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Compact Visual Queue (Horizontal Pointer Track)
+   -------------------------------------------------------------------------- */
+.visual-queue-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-4);
+}
+
+.visual-queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.visual-track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding: var(--space-2) 0 var(--space-3);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.visual-node {
+    flex-shrink: 0;
+    background: var(--bg-surface-alt);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    text-align: center;
+    position: relative;
+    min-width: 90px;
+    transition: all var(--transition-fast);
+}
+
+.visual-node.is-front {
+    border-color: var(--warning);
+    background: #FFFDF5;
+    box-shadow: 0 0 0 1px var(--warning);
+}
+
+.visual-node.is-rear {
+    border-color: var(--primary);
+}
+
+.visual-node-token {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.visual-node.is-front .visual-node-token {
+    color: var(--warning-hover);
+}
+
+.visual-node-name {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+}
+
+.visual-tag-indicator {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.58rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+}
+
+.visual-tag-indicator.front { background: var(--warning); color: #0F172A; }
+.visual-tag-indicator.rear { background: var(--primary); color: #FFFFFF; }
+.visual-tag-indicator.both { background: var(--success); color: #FFFFFF; }
+
+.visual-arrow {
+    color: var(--text-light);
+    flex-shrink: 0;
+    font-size: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   Waiting Queue List
+   -------------------------------------------------------------------------- */
+.waiting-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.waiting-item-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all var(--transition-fast);
+}
+
+.waiting-item-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-surface-alt);
+}
+
+.waiting-item-card.is-front {
+    border-color: var(--warning-border);
+    background: #FFFDF5;
+}
+
+.waiting-item-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.waiting-item-token {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.waiting-item-card.is-front .waiting-item-token {
+    color: var(--warning-hover);
+    background: #FEF3C7;
+}
+
+.waiting-item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.waiting-item-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.waiting-item-sub {
+    font-size: 0.725rem;
+    color: var(--text-muted);
+}
+
+/* Completed History Drawer */
+.completed-drawer {
+    margin-top: var(--space-4);
+}
+
+.completed-table-wrapper {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .doctor-split-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .serving-token-display {
+        font-size: 3rem;
+    }
+
+    .serving-patient-name {
+        font-size: 1.3rem;
+    }
+}

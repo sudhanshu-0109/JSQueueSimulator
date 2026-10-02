@@ -1,82 +1,53 @@
 /**
- * QueueFlow - Core Data Structure Implementation
+ * MediQueue - Core Queue Data Structure
  * 
- * Data Structure: Queue (Linear FIFO - First In, First Out)
- * Implementation: Hash Map (Object) with Front & Rear Pointers
+ * Strict FIFO (First-In, First-Out) Linear Data Structure Implementation.
  * 
- * WHY THIS IMPLEMENTATION?
- * Standard JavaScript Array.prototype.shift() takes O(n) time because all
- * remaining elements must be shifted in memory.
- * 
- * By maintaining two explicit integer pointers (frontIndex and rearIndex):
- * - Enqueue: O(1) constant time
- * - Dequeue: O(1) constant time
- * - Front/Peek: O(1) constant time
- * - Rear: O(1) constant time
- * - Size / isEmpty: O(1) constant time
- * 
- * This file serves as the SINGLE SOURCE OF TRUTH for all queue operations.
- * UI components must NEVER manipulate queue data directly.
+ * ARCHITECTURAL DESIGN:
+ * - Uses object-based key-value storage with separate frontIndex and rearIndex pointers.
+ * - Guarantees O(1) constant-time Enqueue and Dequeue operations.
+ * - Strictly avoids Array.prototype.shift(), which incurs an O(n) re-indexing penalty.
+ * - Serves as the independent Single Source of Truth for waiting patients.
  */
 
 class Queue {
     constructor() {
-        /**
-         * Storage object mapping integer indices to elements.
-         * @type {Object.<number, any>}
-         */
         this.items = {};
-
-        /**
-         * Pointer to the index of the first element (front of the queue).
-         * Elements are removed (dequeued) from here.
-         * @type {number}
-         */
         this.frontIndex = 0;
-
-        /**
-         * Pointer to the next available index at the end (rear of the queue).
-         * Elements are inserted (enqueued) here.
-         * @type {number}
-         */
         this.rearIndex = 0;
     }
 
     /**
-     * Inserts an element at the rear of the queue.
+     * Inserts an element at the REAR of the queue.
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      * 
-     * @param {*} element - The item/member object to be added.
-     * @returns {number} The new size of the queue.
+     * @param {*} item - The patient object or data to enqueue.
+     * @returns {*} The enqueued item.
      */
-    enqueue(element) {
-        if (element === undefined || element === null) {
-            throw new Error("Cannot enqueue null or undefined element.");
-        }
-        this.items[this.rearIndex] = element;
+    enqueue(item) {
+        this.items[this.rearIndex] = item;
         this.rearIndex++;
-        return this.size();
+        return item;
     }
 
     /**
-     * Removes and returns the front element from the queue.
-     * If the queue is empty, returns null (Queue Underflow).
+     * Removes and returns the element at the FRONT of the queue.
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      * 
-     * @returns {*|null} The dequeued element or null if empty.
+     * @returns {*|null} The dequeued item, or null if the queue is empty.
      */
     dequeue() {
         if (this.isEmpty()) {
-            return null; // Underflow condition
+            return null;
         }
 
         const item = this.items[this.frontIndex];
-        delete this.items[this.frontIndex]; // Free up memory
+        delete this.items[this.frontIndex];
         this.frontIndex++;
 
-        // Reset pointers when queue becomes empty to prevent integer unbounded growth
+        // Reset pointer indices when queue becomes empty to prevent unbounded memory indices
         if (this.isEmpty()) {
             this.frontIndex = 0;
             this.rearIndex = 0;
@@ -86,10 +57,10 @@ class Queue {
     }
 
     /**
-     * Returns the front element without removing it.
+     * Inspects the element at the FRONT of the queue without removing it.
      * Time Complexity: O(1)
      * 
-     * @returns {*|null} The front element or null if empty.
+     * @returns {*|null} The front item, or null if empty.
      */
     front() {
         if (this.isEmpty()) {
@@ -99,10 +70,10 @@ class Queue {
     }
 
     /**
-     * Returns the rear (most recently added) element without removing it.
+     * Inspects the element at the REAR of the queue without removing it.
      * Time Complexity: O(1)
      * 
-     * @returns {*|null} The rear element or null if empty.
+     * @returns {*|null} The rear item, or null if empty.
      */
     rear() {
         if (this.isEmpty()) {
@@ -112,10 +83,10 @@ class Queue {
     }
 
     /**
-     * Returns the current number of elements in the queue.
+     * Returns the number of elements currently waiting in the queue.
      * Time Complexity: O(1)
      * 
-     * @returns {number} Number of elements currently in the queue.
+     * @returns {number} Current queue size.
      */
     size() {
         return this.rearIndex - this.frontIndex;
@@ -132,7 +103,7 @@ class Queue {
     }
 
     /**
-     * Clears all elements from the queue and resets pointers.
+     * Resets the queue to an empty state with initialized pointers.
      * Time Complexity: O(1)
      */
     clear() {
@@ -142,51 +113,40 @@ class Queue {
     }
 
     /**
-     * Returns an array representation of all elements in FIFO order (Front to Rear).
-     * Used exclusively for UI rendering and visualization.
-     * Time Complexity: O(n) where n is queue size.
+     * Returns an array representation of all waiting items in exact FIFO order.
+     * Used exclusively for read-only rendering without mutating queue pointers.
+     * Time Complexity: O(n)
      * 
-     * @returns {Array} Array of elements ordered from Front to Rear.
+     * @returns {Array} Array of items from front to rear.
      */
     getAll() {
         const result = [];
         for (let i = this.frontIndex; i < this.rearIndex; i++) {
-            result.push(this.items[i]);
+            if (this.items[i] !== undefined) {
+                result.push(this.items[i]);
+            }
         }
         return result;
     }
 
     /**
-     * Searches for a member by predicate function.
-     * Supporting helper method for search features.
-     * Time Complexity: O(n)
+     * Reconstructs the Queue instance from an array of stored items.
+     * Ensures items are properly enqueued in sequential order.
      * 
-     * @param {Function} predicate - Callback function (item, index, position) => boolean
-     * @returns {Object|null} Matching item with position info or null.
+     * @param {Array} itemsArray - Array of saved items.
      */
-    find(predicate) {
-        let position = 1;
-        for (let i = this.frontIndex; i < this.rearIndex; i++) {
-            const item = this.items[i];
-            if (predicate(item, i, position)) {
-                return {
-                    item: item,
-                    index: i,
-                    position: position
-                };
-            }
-            position++;
+    loadFromArray(itemsArray) {
+        this.clear();
+        if (Array.isArray(itemsArray)) {
+            itemsArray.forEach(item => this.enqueue(item));
         }
-        return null;
     }
 }
 
-// Export for browser environment
+// Export for browser window and Node.js environments
 if (typeof window !== 'undefined') {
     window.Queue = Queue;
 }
-
-// Export for Node/CommonJS environment if ever tested via unit tests
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = Queue;
 }

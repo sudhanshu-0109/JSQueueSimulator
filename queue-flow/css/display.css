@@ -1,0 +1,288 @@
+/* ==========================================================================
+   MediQueue - Public Waiting Lounge TV Display Stylesheet
+   High-legibility, High-contrast Clinical Monitor Screen
+   ========================================================================== */
+
+.display-body {
+    background-color: #0F172A;
+    color: #F8FAFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TV Monitor Header */
+.display-header {
+    background: #1E293B;
+    border-bottom: 2px solid #334155;
+    padding: var(--space-4) var(--space-8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.display-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.display-logo {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+}
+
+.display-title-group h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+}
+
+.display-title-group p {
+    font-size: 0.85rem;
+    color: #94A3B8;
+}
+
+.display-clock-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.display-clock {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #38BDF8;
+    line-height: 1;
+}
+
+.display-date {
+    font-size: 0.8rem;
+    color: #94A3B8;
+    margin-top: 3px;
+}
+
+/* TV Main Content Grid */
+.display-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-8);
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* Left: Now Serving Hero Banner */
+.display-serving-card {
+    background: #1E293B;
+    border: 2px solid #22C55E;
+    border-radius: var(--radius-xl);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 35px rgba(34, 197, 94, 0.15);
+    transition: all 300ms ease-out;
+}
+
+.display-serving-card.new-call {
+    animation: displayPulse 1s ease-in-out;
+}
+
+@keyframes displayPulse {
+    0% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    50% { transform: scale(1.02); box-shadow: 0 0 60px rgba(34, 197, 94, 0.4); }
+    100% { transform: scale(1); box-shadow: 0 0 35px rgba(34, 197, 94, 0.15); }
+}
+
+.display-section-badge {
+    position: absolute;
+    top: var(--space-5);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 18px;
+    border-radius: var(--radius-full);
+}
+
+.badge-now-serving {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ADE80;
+    border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.display-serving-token {
+    font-family: var(--font-mono);
+    font-size: 6.5rem;
+    font-weight: 900;
+    color: #4ADE80;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: var(--space-4) 0 var(--space-2);
+    text-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+}
+
+.display-serving-name {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-bottom: var(--space-2);
+}
+
+.display-room-indicator {
+    font-size: 1.1rem;
+    color: #94A3B8;
+    background: #0F172A;
+    padding: 6px 20px;
+    border-radius: var(--radius-full);
+    border: 1px solid #334155;
+    margin-top: var(--space-4);
+}
+
+/* Right: Next Patient & Waiting Column */
+.display-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.display-next-card {
+    background: #1E293B;
+    border: 2px solid #F59E0B;
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.1);
+}
+
+.badge-please-wait {
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 14px;
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-2);
+}
+
+.display-next-token {
+    font-family: var(--font-mono);
+    font-size: 3.8rem;
+    font-weight: 800;
+    color: #FBBF24;
+    line-height: 1;
+    margin: var(--space-2) 0;
+}
+
+.display-next-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+/* Upcoming Waiting Queue Preview on TV */
+.display-queue-card {
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.display-queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid #334155;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #94A3B8;
+}
+
+.display-queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    overflow-y: auto;
+    max-height: 240px;
+}
+
+.display-queue-row {
+    background: #0F172A;
+    border: 1px solid #334155;
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.display-queue-token {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: #38BDF8;
+}
+
+.display-queue-name {
+    font-weight: 600;
+    color: #E2E8F0;
+    font-size: 0.9rem;
+}
+
+/* Display Footer */
+.display-footer {
+    background: #0F172A;
+    border-top: 1px solid #334155;
+    padding: var(--space-3) var(--space-8);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #64748B;
+}
+
+/* Responsive TV adjustments */
+@media (max-width: 900px) {
+    .display-content {
+        grid-template-columns: 1fr;
+        padding: var(--space-4);
+        gap: var(--space-4);
+    }
+
+    .display-header {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .display-serving-token {
+        font-size: 4.5rem;
+    }
+
+    .display-serving-name {
+        font-size: 1.6rem;
+    }
+}

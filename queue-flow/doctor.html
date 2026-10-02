@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MediQueue — Doctor Consultation Dashboard</title>
+    <meta name="description" content="Doctor OPD Consultation Terminal for calling next patients via FIFO dequeue and managing consultations.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/doctor.css">
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <header class="top-nav">
+        <a href="index.html" class="nav-brand">
+            <div class="nav-logo-icon" style="background: var(--success);">
+                <i data-lucide="stethoscope" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="nav-title-group">
+                <h1>MediQueue</h1>
+                <p>Dr. Sharma · OPD Room 04</p>
+            </div>
+        </a>
+
+        <div class="nav-links">
+            <a href="assistant.html" class="nav-link">
+                <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+                <span>Assistant</span>
+            </a>
+            <a href="doctor.html" class="nav-link active">
+                <i data-lucide="stethoscope" style="width: 15px; height: 15px;"></i>
+                <span>Doctor Room</span>
+            </a>
+            <a href="display.html" class="nav-link">
+                <i data-lucide="tv" style="width: 15px; height: 15px;"></i>
+                <span>Public Display</span>
+            </a>
+        </div>
+
+        <div class="nav-status">
+            <span class="pulse-dot"></span>
+            <span>Live Sync Active</span>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-container">
+
+        <!-- KPI Metrics Grid -->
+        <section class="kpi-grid" aria-label="OPD Metrics">
+            <!-- 1. Consultation Status -->
+            <div class="kpi-card">
+                <div class="kpi-icon green">
+                    <i data-lucide="activity" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Room Status</span>
+                    <span class="kpi-value" id="doc-kpi-status" style="font-size: 1.15rem; color: var(--success);">AVAILABLE</span>
+                    <span class="kpi-subtext" id="doc-kpi-status-sub">Ready for next patient</span>
+                </div>
+            </div>
+
+            <!-- 2. Waiting in Queue -->
+            <div class="kpi-card">
+                <div class="kpi-icon blue">
+                    <i data-lucide="users" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Queue Size</span>
+                    <span class="kpi-value" id="doc-kpi-queue">0</span>
+                    <span class="kpi-subtext">Patients in waiting line</span>
+                </div>
+            </div>
+
+            <!-- 3. Next in Line -->
+            <div class="kpi-card">
+                <div class="kpi-icon amber">
+                    <i data-lucide="corner-down-right" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Next In Line (front())</span>
+                    <span class="kpi-value" id="doc-kpi-next-token" style="color: var(--warning);">—</span>
+                    <span class="kpi-subtext" id="doc-kpi-next-name">No patient waiting</span>
+                </div>
+            </div>
+
+            <!-- 4. Completed Count -->
+            <div class="kpi-card">
+                <div class="kpi-icon purple">
+                    <i data-lucide="check-circle-2" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Completed</span>
+                    <span class="kpi-value" id="doc-kpi-completed">0</span>
+                    <span class="kpi-subtext">Consultations today</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doctor Layout Container -->
+        <div class="doctor-layout">
+
+            <!-- ==============================================================
+                 HERO SECTION: NOW SERVING (Prominent Consultation Center)
+                 ============================================================== -->
+            <section class="serving-hero-card" id="serving-card">
+                <div class="serving-header">
+                    <div class="serving-badge-title">
+                        <i data-lucide="radio" style="width: 15px; height: 15px;"></i>
+                        <span>ACTIVE CONSULTATION • OPD ROOM 04</span>
+                    </div>
+                    <span class="badge badge-waiting" id="serving-state-badge">IDLE</span>
+                </div>
+
+                <div class="serving-body" id="serving-container">
+                    <!-- Populated dynamically by doctor.js -->
+                </div>
+            </section>
+
+            <!-- ==============================================================
+                 SPLIT SECTION: Next Patient (Peek) & Waiting Queue
+                 ============================================================== -->
+            <div class="doctor-split-grid">
+
+                <!-- Left: Next Patient Preview & Quick Call Button -->
+                <section class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i data-lucide="user-check" style="width: 18px; height: 18px; color: var(--warning);"></i>
+                            <span>Next Patient (Front Pointer)</span>
+                        </div>
+                        <span class="badge badge-token">O(1) PEEK</span>
+                    </div>
+
+                    <div class="card-body">
+                        <div id="next-preview-container">
+                            <!-- Populated dynamically by doctor.js -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right: Waiting Queue with Visual Track -->
+                <section class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i data-lucide="list-ordered" style="width: 18px; height: 18px; color: var(--primary);"></i>
+                            <span>Waiting Queue (FIFO Sequence)</span>
+                        </div>
+                        <span class="badge badge-waiting" id="doc-queue-badge">0 Waiting</span>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Horizontal Visual Queue Track -->
+                        <div class="visual-queue-card">
+                            <div class="visual-queue-header">
+                                <span>FRONT (Next Exit) ↓</span>
+                                <span>FIFO FLOW →</span>
+                                <span>↑ REAR (Latest Entry)</span>
+                            </div>
+                            <div class="visual-track" id="visual-track">
+                                <!-- Populated dynamically by doctor.js -->
+                            </div>
+                        </div>
+
+                        <!-- Waiting List Cards -->
+                        <div class="waiting-list-items" id="waiting-list-container">
+                            <!-- Populated dynamically by doctor.js -->
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ==============================================================
+                 COMPLETED CONSULTATIONS HISTORY
+                 ============================================================== -->
+            <section class="card completed-drawer">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i data-lucide="check-check" style="width: 18px; height: 18px; color: var(--success);"></i>
+                        <span>Today's Completed Consultations</span>
+                    </div>
+                    <span class="badge badge-token" id="completed-count-badge">0 Finished</span>
+                </div>
+
+                <div class="card-body" style="padding: 0;">
+                    <div class="completed-table-wrapper" id="completed-list-container">
+                        <!-- Populated dynamically by doctor.js -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div>
+            <strong>MediQueue Doctor Terminal</strong> • Dr. Sharma • OPD Room 04
+        </div>
+        <div>
+            <span class="footer-dsa-badge">Queue Operation: dequeue() [O(1)]</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/queue.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/token.js"></script>
+    <script src="js/doctor.js"></script>
+</body>
+</html>

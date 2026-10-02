@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MediQueue — Public Waiting Lounge Display</title>
+    <meta name="description" content="Public OPD Waiting Lounge screen displaying the active NOW SERVING token and next patient in line.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/display.css">
+</head>
+<body class="display-body">
+
+    <!-- TV Header -->
+    <header class="display-header">
+        <div class="display-brand">
+            <div class="display-logo">
+                <i data-lucide="activity" style="width: 26px; height: 26px;"></i>
+            </div>
+            <div class="display-title-group">
+                <h1>MediQueue Live Display</h1>
+                <p>Hospital Outpatient Department • OPD Room 04</p>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div class="nav-links">
+                <a href="assistant.html" class="nav-link" style="color: #94A3B8;">
+                    <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
+                    <span>Assistant</span>
+                </a>
+                <a href="doctor.html" class="nav-link" style="color: #94A3B8;">
+                    <i data-lucide="stethoscope" style="width: 14px; height: 14px;"></i>
+                    <span>Doctor</span>
+                </a>
+            </div>
+
+            <div class="display-clock-box">
+                <div class="display-clock" id="display-clock">--:--:--</div>
+                <div class="display-date" id="display-date">----------</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main TV Content Grid -->
+    <main class="display-content">
+
+        <!-- Left: NOW SERVING (Primary Hero) -->
+        <section class="display-serving-card" id="display-serving-card">
+            <span class="display-section-badge badge-now-serving">
+                <i data-lucide="bell" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i>
+                NOW SERVING
+            </span>
+
+            <div class="display-serving-token" id="tv-serving-token">—</div>
+            <div class="display-serving-name" id="tv-serving-name">Waiting for Doctor</div>
+            
+            <div class="display-room-indicator" id="tv-room-desc">
+                Please proceed to <strong>OPD Room 04</strong> • Dr. Sharma
+            </div>
+        </section>
+
+        <!-- Right: Next Patient & Upcoming Waiting Line -->
+        <aside class="display-sidebar">
+
+            <!-- Next Patient Card -->
+            <section class="display-next-card">
+                <span class="badge-please-wait">
+                    NEXT IN LINE • PLEASE PREPARE
+                </span>
+                <div class="display-next-token" id="tv-next-token">—</div>
+                <div class="display-next-name" id="tv-next-name">No patient waiting</div>
+            </section>
+
+            <!-- Upcoming Queue List -->
+            <section class="display-queue-card">
+                <div class="display-queue-header">
+                    <span>UPCOMING QUEUE</span>
+                    <span id="tv-waiting-count">0 Waiting</span>
+                </div>
+                <div class="display-queue-list" id="tv-queue-list">
+                    <!-- Populated dynamically by display.js -->
+                </div>
+            </section>
+
+        </aside>
+
+    </main>
+
+    <!-- TV Footer -->
+    <footer class="display-footer">
+        <div>
+            <strong>MediQueue Terminal</strong> • Real-Time OPD Queue Dispatch System
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="pulse-dot"></span>
+            <span>Live LocalStorage &amp; Broadcast Synchronized</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/queue.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/display.js"></script>
+</body>
+</html>
